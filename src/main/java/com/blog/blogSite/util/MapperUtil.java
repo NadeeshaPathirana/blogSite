@@ -1,8 +1,11 @@
-package com.blog.blogSite.mapper;
+package com.blog.blogSite.util;
 
 import com.blog.blogSite.entity.Author;
 import com.blog.blogSite.entity.Comment;
 import com.blog.blogSite.entity.Post;
+import com.blog.blogSite.mapper.AuthorMapper;
+import com.blog.blogSite.mapper.CommentMapper;
+import com.blog.blogSite.mapper.PostMapper;
 
 import java.util.ArrayList;
 import java.util.List;

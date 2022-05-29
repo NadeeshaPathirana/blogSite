@@ -1,12 +1,16 @@
 package com.blog.blogSite.service;
 
 import com.blog.blogSite.entity.Comment;
+import com.blog.blogSite.exception.ResourceAlreadyExists;
+import com.blog.blogSite.exception.ResourceNotFoundException;
 import com.blog.blogSite.repository.CommentRepository;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Comment service implementation
@@ -21,6 +25,11 @@ public class CommentServiceImpl  implements CommentService
     @Override
     public Comment saveComment(Comment comment)
     {
+        Optional<Comment> byId = commentRepository.findById(comment.getId());
+        if (byId.isPresent())
+        {
+            throw new ResourceAlreadyExists();
+        }
         return commentRepository.save(comment);
     }
 
@@ -32,12 +41,22 @@ public class CommentServiceImpl  implements CommentService
 
     @Override
     public Comment fetchCommentById(Long commentId) {
+        Optional<Comment> byId = commentRepository.findById(commentId);
+        if (byId.isEmpty())
+        {
+            throw new ResourceNotFoundException();
+        }
         return commentRepository.findById(commentId).get();
     }
 
     @Override
     public Comment updateComment(Comment comment, Long commentId)
     {
+        Optional<Comment> byId = commentRepository.findById(commentId);
+        if (byId.isEmpty())
+        {
+            throw new ResourceNotFoundException();
+        }
         Comment commentDB = commentRepository.findById(commentId).get();
 
         if (Objects.nonNull(comment.getPost().getId())) {
@@ -70,6 +89,11 @@ public class CommentServiceImpl  implements CommentService
     @Override
     public void deleteCommentById(Long commentId)
     {
+        Optional<Comment> byId = commentRepository.findById(commentId);
+        if (byId.isEmpty())
+        {
+            throw new ResourceNotFoundException();
+        }
         commentRepository.deleteById(commentId);
     }
 }

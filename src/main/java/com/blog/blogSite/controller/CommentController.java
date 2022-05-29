@@ -1,10 +1,10 @@
 package com.blog.blogSite.controller;
 
 import com.blog.blogSite.entity.Comment;
-import com.blog.blogSite.mapper.CommentMapper;
-import com.blog.blogSite.mapper.MapperUtil;
+import com.blog.blogSite.util.MapperUtil;
 import com.blog.blogSite.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,30 +22,30 @@ public class CommentController
 
     // Read operations
     @GetMapping("/comments")
-    public List<CommentMapper> fetchCommentList()
+    public ResponseEntity fetchCommentList()
     {
         List<Comment> comments = commentService.fetchComment();
-        return MapperUtil.getCommentMappers(comments);
+        return ResponseEntity.ok(MapperUtil.getCommentMappers(comments));
     }
 
     @GetMapping("/comments/{id}")
-    public CommentMapper fetchCommentById(@PathVariable("id") Long commentId)
+    public ResponseEntity fetchCommentById(@PathVariable("id") Long commentId)
     {
-        return MapperUtil.mapComment(commentService.fetchCommentById(commentId));
+        return ResponseEntity.ok(MapperUtil.mapComment(commentService.fetchCommentById(commentId)));
     }
 
     // Save operation
     @PostMapping("/comments")
-    public CommentMapper savePost(@Valid @RequestBody Comment comment)
+    public ResponseEntity savePost(@Valid @RequestBody Comment comment)
     {
-        return MapperUtil.mapComment(commentService.saveComment(comment));
+        return ResponseEntity.ok(MapperUtil.mapComment(commentService.saveComment(comment)));
     }
 
     // Update operation
     @PutMapping("/comments/{id}")
-    public CommentMapper updateComment(@RequestBody Comment comment, @PathVariable("id") Long commentId)
+    public ResponseEntity updateComment(@RequestBody Comment comment, @PathVariable("id") Long commentId)
     {
-        return MapperUtil.mapComment(commentService.updateComment(comment, commentId));
+        return ResponseEntity.ok(MapperUtil.mapComment(commentService.updateComment(comment, commentId)));
     }
 
     // Delete operation

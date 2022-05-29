@@ -2,6 +2,7 @@ package com.blog.blogSite.service.authservice.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.blog.blogSite.exception.AuthenticationException;
 import com.blog.blogSite.service.authservice.AuthService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,6 +59,7 @@ public class ApplicationLoginInterceptor extends HandlerInterceptorAdapter {
             // If this is invalid request
             if (!isValidBasicAuthRequest) {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                throw new AuthenticationException();
             }
 
         } catch (Exception e) {
